@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+	<title>Deep Dive 1</title>
+        <style type="text/css">
+            html { height: 100% }
+            body { height: 100%; 
+                margin: 0px; 
+                padding: 0px; }
+            #map_canvas { width:90%; 
+                height:80%; 
+                margin-left: auto; 
+                margin-right: auto }
+        </style>
+        <script type="text/javascript"
+            src="http://maps.google.com/maps/api/js?sensor=false">
+        </script>
+        <script type="text/javascript">
+            function initialize() {
+                var venice = new google.maps.LatLng(45.43417,12.338505)
+				var grandcanal = new google.maps.LatLng(45.436012, 12.330866)
+				var plazzasanmarco = new google.maps.LatLng(45.433934, 12.338184)
+				var arsenale = new google.maps.LatLng(45.436223, 12.354255)
+				var rialto = new google.maps.LatLng(45.438102, 12.335808)
+				var palace = new google.maps.LatLng(45.433668, 12.340443)
+                var myOptions = {
+                    zoom: 14,
+                    center: venice,
+                    mapTypeId: google.maps.MapTypeId.ROAD,
+					styles: [
+					{ 
+						"featureType": "road.highway",
+						"stylers": [
+							{ "visibility": "simplified" }
+							]
+						},{
+						"featureType": "road.local",
+						"stylers": [
+							{ "visibility": "simplified" }
+							]
+						},{
+						"featureType": "transit.line",
+						"stylers": [
+							{ "visibility": "off" } 
+							]
+						},{
+						"featureType": "water",
+						"stylers": [
+							{ "visibility": "simplified" }
+							]
+						},{
+						"featureType": "poi.attraction",
+						"stylers": [
+							{ "visibility": "on" }
+							]
+						},{
+						"featureType": "poi.government",
+						"stylers": [
+							{ "visibility": "off" }
+							]
+						},{
+						"featureType": "poi.school",
+						"stylers": [
+							{ "visibility": "off" }
+							]
+						} ]
+				};
+                var map = new google.maps.Map(
+                    document.getElementById("map_canvas"), 
+                    myOptions);
+				var grandcanalm = new google.maps.Marker({
+			  position: grandcanal,
+			  title:"The Grand Canal"
+			  });
+			  grandcanalm.setMap(map);
+			  	var plazzasanmarcom = new google.maps.Marker({
+			  position: plazzasanmarco,
+			  title:"The Plazza San Marco"
+			  });
+			  plazzasanmarcom.setMap(map);
+			  	var arsenalem = new google.maps.Marker({
+			  position: arsenale,
+			  title:"The Arsenale Di Venezia"
+			  });
+			  arsenalem.setMap(map);
+			  	var rialtom = new google.maps.Marker({
+			  position: rialto,
+			  title:"Rialto Bridge"
+			  });
+			  rialtom.setMap(map);
+			  	var palacem = new google.maps.Marker({
+			  position: palace,
+			  title:"The Palazzo Ducale"
+			  });
+			  palacem.setMap(map);
+			  var grandcanalInfoContent = '<div class="infoBox">' +
+			  '<p>The Grand Canal is a canal in Venice, Italy. It forms one of the major water-traffic corridors lined with more than 170 buildings, most of which date from the 13th to the 18th century, and demonstrate the welfare and art created by the Republic of Venice</p>' +
+			  '</div>'
+			  var plazzasanmarcoInfoContent = '<div class="infoBox">' +
+			  '<p>Piazza San Marco is the principal public square of Venice, Italy, With its extension The Piazzetta the two spaces together form the social, religious and political centre of Venice and are commonly considered together</p>' +
+			  '</div>'
+			  var arsenaleInfoContent = '<div class="infoBox">' +
+			  '<p>The Venetian Arsenal was a complex of state-owned shipyards and armories clustered together in Venice in northern Italy. It was responsible for the bulk of Venices naval power</p>' +
+			  '</div>'
+			  var rialtoInfoContent = '<div class="infoBox">' +
+			  '<p>The Rialto Bridge is one of the four bridges spanning the Grand Canal in Venice, Italy. It is the oldest bridge across the canal</p>' +
+			  '</div>'
+			  var palaceInfoContent = '<div class="infoBox">' +
+			  '<p>The Doges Palace is a palace built in Venetian Gothic style, and one of the main landmarks of the city of Venice, northern Italy. The palace was the residence of the Doge of Venice, the supreme authority of the Republic of Venice, opening as a museum in 1923</p>' +
+			  '</div>'
+			  var grandcanalInfoWindow = new google.maps.InfoWindow({
+			  content: grandcanalInfoContent
+			  });
+			  google.maps.event.addListener(grandcanalm, 'click', function() {
+			  grandcanalInfoWindow.open(map,grandcanalm);
+			  });
+			  var plazzasanmarcoInfoWindow = new google.maps.InfoWindow({
+			  content: plazzasanmarcoInfoContent
+			  });
+			  google.maps.event.addListener(plazzasanmarcom, 'click', function() {
+			  plazzasanmarcoInfoWindow.open(map,plazzasanmarcom);
+			  });
+			  var arsenaleInfoWindow = new google.maps.InfoWindow({
+			  content: arsenaleInfoContent
+			  });
+			  google.maps.event.addListener(arsenalem, 'click', function() {
+			  arsenaleInfoWindow.open(map,arsenalem);
+			  });
+			  var rialtoInfoWindow = new google.maps.InfoWindow({
+			  content: rialtoInfoContent
+			  });
+			  google.maps.event.addListener(rialtom, 'click', function() {
+			  rialtoInfoWindow.open(map,rialtom);
+			  });
+			  var palaceInfoWindow = new google.maps.InfoWindow({
+			  content: palaceInfoContent
+			  });
+			  google.maps.event.addListener(palacem, 'click', function() {
+			  palaceInfoWindow.open(map,palacem);
+			  });
+            }
+        </script>
+    </head>
+    
+    <body onload="initialize()">
+        <h1>Deep Dive 1</h1>
+		<p> Venice has always interested me and I created this map to show some of the locations of interest in the city of Venice<p> 
+        <div id="map_canvas"></div>
+    </body>
+</html>
