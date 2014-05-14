@@ -1,0 +1,59 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+
+	<link rel="stylesheet" href="styles/olGoogleStyles.css" type="text/css">
+    <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript">        
+        // define global variables
+        var lon =  -106.629412;
+        var lat =  35.104826;
+        var zoom = 12;
+        var map;
+        var layer;
+		//var gphy
+
+        // =============== Initialization function ===================
+        function init(){
+            map = new OpenLayers.Map( 'map' );
+			
+			
+			//Google
+			gphy = new OpenLayers.Layer.Google(
+                "Google Physical",
+                {type: google.maps.MapTypeId.TERRAIN}
+            );
+            
+            // =========== OSM Map ====================
+            //layer = new OpenLayers.Layer.OSM( "Open Street Map");
+            map.addLayer(gphy);
+            
+            map.setCenter(
+                new OpenLayers.LonLat(lon, lat).transform(
+                    new OpenLayers.Projection("EPSG:4326"),
+                    map.getProjectionObject()
+                ), zoom
+            );                
+        }
+        // =============== End of Initialization Function ============
+        
+    </script>
+    <style type="text/css">
+        #map {width:90%; height:800px}
+    </style>
+  </head>
+  <body onload="init()">
+    <h1>Milestone 10</h1>
+<h2>Question 1</h2>
+<p>The City of Albuquerque, I want to show areas of interest in and around the city for visitors to the city .</p>
+<h2>Question 2</h2>
+<p>35.104826,-106.629412.</p>
+<h2>Question 3</h2>
+<p>Google Maps Physical, because it shows the road networks clearly and is rather clean and easy to read. </p>
+<h2>Question 4</h2>
+<p>Local, It means the default zoom level for the map will be higher.</p>
+<h2>Question 5</h2>
+    <!-- Map DIV -->
+    <div id="map"></div>    
+  </body>
+</html>
