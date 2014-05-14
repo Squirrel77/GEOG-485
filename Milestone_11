@@ -1,0 +1,193 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
+    <script type="text/javascript">
+        
+        // define global variables
+        var lon = -106.629412;
+        var lat = 35.104826;
+        var zoom = 11;
+        var myProjection = new OpenLayers.Projection("EPSG:4326")
+        var map;
+        var Layers = new Object();
+        var bmngLayer, countiesLayer, indlandLayer, federallandsLayer;
+
+        // =============== Initialization function ===================
+        function init(){
+             
+            map = new OpenLayers.Map('map',
+            	{
+            		numZoomLevels: 20 // default=16
+            	});
+            
+			// =========== USGS National Map WMS ====== 
+
+            // from http://basemap.nationalmap.gov/ArcGIS/services/USGSImageryTopo/MapServer/WMSServer?request=GetCapabilities&service=WMS
+			Layers.usImagery = new OpenLayers.Layer.WMS( 
+            	"US Imagery Tile Service - USGS", 
+            	"http://basemap.nationalmap.gov/arcgis/services/USGSImageryTopo/MapServer/WmsServer?",
+            	{layers: "0", version: '1.3.0', transparent: 'TRUE'},
+            	{isBaseLayer: true}
+            );
+            map.addLayer(Layers.usImagery)
+
+
+			// =========== Create and add a Vector layer to the map that that will contain the created features ====
+    		Layers.localFeatures = new OpenLayers.Layer.Vector('My Local Features');
+    		map.addLayer(Layers.localFeatures);
+
+			
+			// =========== Create Some Styles ==============
+			// Define some Styles
+    		myRedPointStyle = {
+    			pointRadius: 12, 
+    			fillColor: "#CC0000",
+    			fillOpacity: .5,
+    			strokeOpacity: .5}
+				
+			myBluePointStyle = {
+    			pointRadius: 6, 
+    			fillColor: "#007BA7",
+    			fillOpacity: .5,
+    			strokeOpacity: .5}
+				
+			myGreenPointStyle = {
+    			pointRadius: 6, 
+    			fillColor: "#228B22",
+    			fillOpacity: .5,
+    			strokeOpacity: .5}
+
+    		myCountiesStyle = {
+    			fillColor: "#ffffff",
+    			fillOpacity: .2,
+    			strokeOpacity: .5,
+    			strokeColor: "#ffffff"}
+
+    		myStatesStyle = {
+    			fillColor: "#0000ff",
+    			fillOpacity: .2,
+    			strokeOpacity: .5,
+    			strokeColor: "#0000ff"}
+
+    		myCitiesStyle = {
+    			fillColor: "#00ff00",
+    			fillOpacity: .2,
+    			strokeOpacity: .5,
+    			strokeColor: "#00ff00"}
+
+    		myBuildingStyle = {
+    			fillColor: "#88ff00",
+    			fillOpacity: .2,
+    			strokeOpacity: .5,
+    			strokeColor: "#88ff00"}
+
+    		myPathStyle = {
+    			strokeOpacity: .8,
+    			strokeColor: "#880088",
+    			strokeWidth: 2}
+
+
+			// =========== Create Some Geometries & Features ==============
+
+			// Key Coordinates (Geometries)
+			var Coord_Sunport = new OpenLayers.Geometry.Point(-106.612793,35.042646);
+    		var Coord_UNM = new OpenLayers.Geometry.Point(-106.624899,35.084506);
+			var Coord_RIO = new OpenLayers.Geometry.Point(-106.680389,35.088807);
+			var Coord_SAN = new OpenLayers.Geometry.Point( -106.430615,35.120119);
+			var Coord_PTO = new OpenLayers.Geometry.Point(-106.750434,35.135634);
+    		
+    		// Corresponding Features
+    		var Point_Sunport = new OpenLayers.Feature.Vector(Coord_Sunport,null,myRedPointStyle);
+    		var Point_UNM = new OpenLayers.Feature.Vector(Coord_UNM);
+			var Point_RIO = new OpenLayers.Feature.Vector(Coord_RIO,null,myBluePointStyle);
+			var Point_SAN = new OpenLayers.Feature.Vector(Coord_SAN,null,myGreenPointStyle);
+			var Point_PTO = new OpenLayers.Feature.Vector(Coord_PTO,null,myGreenPointStyle);
+    		
+    		Layers["localFeatures"].addFeatures([Point_Sunport, Point_UNM, Point_RIO, Point_SAN, Point_PTO]);
+    		
+			
+			
+			// =========== KML Layer Addition ===============
+			Layers.states = new OpenLayers.Layer.Vector("KML - States", {
+                projection: map.displayProjection,
+                visibility: false,
+                style: myStatesStyle,
+                strategies: [new OpenLayers.Strategy.Fixed()],
+                protocol: new OpenLayers.Protocol.HTTP({
+                    url: "http://kkb-web.s3.amazonaws.com/data/tl_2010_35_state10.kml",
+                    format: new OpenLayers.Format.KML({
+                        extractAttributes: true
+                    })
+                })
+            });
+           	map.addLayer(Layers.states)	
+           		
+			Layers.counties = new OpenLayers.Layer.Vector("KML - Counties", {
+                projection: map.displayProjection,
+                visibility: false,
+                style: myCountiesStyle,
+                strategies: [new OpenLayers.Strategy.Fixed()],
+                protocol: new OpenLayers.Protocol.HTTP({
+                    url: "http://kkb-web.s3.amazonaws.com/data/NMCounties.kml",
+                    format: new OpenLayers.Format.KML({
+                        extractAttributes: true
+                    })
+                })
+            });
+           	map.addLayer(Layers.counties)		
+			            
+			Layers.cities = new OpenLayers.Layer.Vector("KML - Cities", {
+                projection: map.displayProjection,
+                visibility: false,
+                style:  myCitiesStyle,
+                strategies: [new OpenLayers.Strategy.Fixed()],
+                protocol: new OpenLayers.Protocol.HTTP({
+                    url: "http://kkb-web.s3.amazonaws.com/data/NMCities.kml",
+                    format: new OpenLayers.Format.KML({
+                        extractAttributes: true
+                    })
+                })
+            });
+           	map.addLayer(Layers.cities)		
+			            
+			            
+			
+			map.setCenter(
+                new OpenLayers.LonLat(lon, lat), zoom
+            );
+
+            map.addControl(new OpenLayers.Control.LayerSwitcher() );
+            map.addControl(new OpenLayers.Control.MousePosition() );
+               
+        }
+        // =============== End of Initialization Function ============
+        
+	</script>
+	<style type="text/css">
+		#map {width:800px; height:500px}
+		.olControlAttribution {
+			font-size: smaller; 
+			left: 3px !important; 
+			bottom: 5px !important; 
+			position: absolute;
+			background-color: rgba(189,192,191,0.5);
+			padding: 2px 5px;
+		}
+		.olControlMousePosition {
+			right: 3px;
+			position: absolute;
+			font-size: smaller;
+			padding: 2px 5px;
+			background-color: rgba(189,192,191,0.5);
+			bottom: 5px !important}
+	</style>
+  </head>
+  <body onload="init()">
+    <h1>Basic OpenLayers Map</h1>
+    <p>Shows the basic use of OpenLayers with a set of WMS layers with vector overlays and KML layers</p>
+	
+	<!-- Map DIV -->
+	<div id="map"></div>
+	
+  </body>
+</html>
