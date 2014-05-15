@@ -1,0 +1,164 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<!-- This page can be used as a template for completing your writeups for milestone and "deep dive" assignments -->
+	<!-- Replace the content placeholders with your own content -->
+
+	<head>
+	    <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
+    <script type="text/javascript">
+        
+        // define global variables
+        var lon = -106.586322;
+        var lat = 35.087449;
+        var zoom = 13;
+        var myProjection = new OpenLayers.Projection("EPSG:4326")
+        var map;
+
+        // =============== Initialization function ===================
+        function init(){
+             
+            map = new OpenLayers.Map('map',
+            	{projection:myProjection}
+            );
+            
+			// =========== USGS National Map WMS ====== 
+
+            // from http://basemap.nationalmap.gov/ArcGIS/services/USGSImageryTopo/MapServer/WMSServer?request=GetCapabilities&service=WMS
+			usImagery = new OpenLayers.Layer.WMS( 
+            	"US Imagery Tile Service - USGS", 
+            	"http://basemap.nationalmap.gov/arcgis/services/USGSImageryTopo/MapServer/WmsServer?",
+            	{layers: "0", version: '1.3.0', transparent: 'TRUE'},
+            	{isBaseLayer: true}
+            );
+            map.addLayer(usImagery)
+                        
+
+            // =========== USGS National Atlas WMS ====
+
+            // from USGS National Atlas: http://webservices.nationalatlas.gov/wms/boundaries?SERVICE=WMS&REQUEST=GetCapabilities
+            countiesLayer = new OpenLayers.Layer.WMS( 
+            	"35106-A5", 
+            	"http://geog485.unm.edu:8080/geoserver/s_jjones15/wms?",
+            	{layers: "s_jjones15:35106-A5", version: '1.3.0', transparent: 'TRUE'},
+            	{isBaseLayer: false, visibility: false, opacity: .8}
+            );
+            map.addLayer(countiesLayer);
+			
+            indlanLayer = new OpenLayers.Layer.WMS( 
+            	"35106-A6", 
+            	"http://geog485.unm.edu:8080/geoserver/s_jjones15/wms?",
+            	{layers: "s_jjones15:35106-A6", version: '1.3.0', transparent: 'TRUE'},
+            	{isBaseLayer: false, visibility: false, opacity: .5}
+            );
+            map.addLayer(indlanLayer);
+			
+            federallandsLayer = new OpenLayers.Layer.WMS( 
+            	"35106-A5_CONT", 
+            	"http://geog485.unm.edu:8080/geoserver/s_jjones15/wms?",
+            	{layers: "s_jjones15:35106-A5_CONT", version: '1.3.0', transparent: 'TRUE'},
+            	{isBaseLayer: false, visibility: false, opacity: .5}
+            );
+            map.addLayer(federallandsLayer);
+			
+			            sp = new OpenLayers.Layer.WMS( 
+            	"35106-A6_CONT", 
+            	"http://geog485.unm.edu:8080/geoserver/s_jjones15/wms?",
+            	{layers: "s_jjones15:35106-A6_CONT", version: '1.3.0', transparent: 'TRUE'},
+            	{isBaseLayer: false, visibility: false, opacity: .5}
+            );
+            map.addLayer(sp);
+			
+			            np = new OpenLayers.Layer.WMS( 
+            	"tgr2006se_bern_lka", 
+            	"http://geog485.unm.edu:8080/geoserver/s_jjones15/wms?",
+            	{layers: "s_jjones15:tgr2006se_bern_lka", version: '1.3.0', transparent: 'TRUE'},
+            	{isBaseLayer: false, visibility: false, opacity: .5}
+            );
+            map.addLayer(np);
+			
+			map.setCenter(
+                new OpenLayers.LonLat(lon, lat), zoom
+            );
+
+            map.addControl(new OpenLayers.Control.LayerSwitcher() );
+            map.addControl(new OpenLayers.Control.Scale() );
+                
+        }
+        // =============== End of Initialization Function ============
+        
+	</script>
+	<style type="text/css">
+		#map {width:800px; height:600px}
+	</style>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<title>Final</title>
+	</head>
+	<body onload="init()">
+	<p>
+	Justin Jones<br>
+	5/13/2014
+	</p>
+	<h1>Final</h1>
+	<h2>Question 1</h2>
+	<h3>35106-A5_CONT.shp</h3>
+	<p>Layer name: 35106-A5_CONT</P>
+	<p>Geometry: 3D Line String</P>
+	<p>Feature Count: 1439</P>
+	<p>Extent: (-106.625000, 35.032739) - (-106.524163, 35.120146)</P>
+	<p>Layer SRS WKT:</P>
+	<h3>35106-A6_CONT.shp</h3>
+	<p>Layer name: 35106-A6_CONT</P>
+	<p>Geometry: 3D Line String</P>
+	<p>Feature Count: 686</P>
+	<p>Extent: (-106.647269, 35.032841) - (-106.624999, 35.120146)</P>
+	<p>Layer SRS WKT:</P>
+	<h3>tgr2006se_bern_lka.shp</h3>
+	<p>Layer name: tgr2006se_bern_lka</P>
+	<p>Geometry: Line String</P>
+	<p>Feature Count: 8451</P>
+	<p>Extent: (-106.647182, 35.032764) - (-106.524194, 35.120146)</P>
+	<p>Layer SRS WKT:</P>
+	<h3>35106-A5.tif</h3>
+	<p>Driver: GTiff/GeoTIFF</P>
+	<p>Files: 35106-A5.tif</P>
+	<p>Size is 1169, 1411</P>
+	<p>Coordinate System is:</P>
+	<p>PROJCS["NAD83 / UTM zone 13N",</P>
+	<h3>35106-A6.tif</h3>
+	<p>Driver: GTiff/GeoTIFF</P>
+	<p>Files: 35106-A6.tif</P>
+       <p>35106-A6.tif.aux.xml</P>
+	<p>Size is 1170, 1413</P>
+	<p>Coordinate System is:</P>
+
+	<h2>Question 2</h2>
+	<h3>35106-A5.tif</h3>
+	<img src="http://imgur.com/j4YirlF.jpg"/>
+	<h3>35106-A6.tif</h3>
+	<img src="http://imgur.com/1ZCtYME.jpg"/>
+	<h3>35106-A5_CONT</h3>
+	<img src="http://imgur.com/KtRrFbH.jpg"/>
+	<h3>35106-A6_CONT</h3>
+	<img src="http://imgur.com/0etlIYQ.jpg"/>
+	<h3>tgr2006se_bern_lka.shp</h3>
+	<img src="http://imgur.com/w7NW7qB.jpg"/>
+	
+	<h2>Question 3</h2>
+	<h3>35106-A5_CONT</h3>
+	<img src="http://imgur.com/YUy4Jp3.jpg"/>
+	<h3>35106-A6_CONT</h3>
+	<img src="http://imgur.com/pZl7fbM.jpg"/>
+	<h3>tgr2006se_bern_lka.shp</h3>
+	<img src="http://imgur.com/o4uJ5vz.jpg"/>
+	
+	<h2>Question 4</h2>
+	<div id="map"></div>
+	
+	<h2>Question 5</h2>
+	<p>tgr2006se_bern_lka.shp</p>
+	<p>35106-A5_CONT</p>
+
+
+
+	</body>
+</html>
