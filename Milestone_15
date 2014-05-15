@@ -1,0 +1,100 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
+    <script type="text/javascript">
+        
+        // define global variables
+        var lon = -106.5;
+        var lat = 36;
+        var zoom = 7;
+        var myProjection = new OpenLayers.Projection("EPSG:4326")
+        var map;
+
+        // =============== Initialization function ===================
+        function init(){
+             
+            map = new OpenLayers.Map('map',
+            	{projection:myProjection}
+            );
+            
+
+			// =========== USGS National Map WMS ====== 
+
+            // from http://basemap.nationalmap.gov/ArcGIS/services/USGSImageryTopo/MapServer/WMSServer?request=GetCapabilities&service=WMS
+			usImagery = new OpenLayers.Layer.WMS( 
+            	"US Imagery Tile Service - USGS", 
+            	"http://basemap.nationalmap.gov/arcgis/services/USGSImageryTopo/MapServer/WmsServer?",
+            	{layers: "0", version: '1.3.0', transparent: 'TRUE'},
+            	{isBaseLayer: true}
+            );
+            map.addLayer(usImagery)
+                        
+
+            // =========== USGS National Atlas WMS ====
+
+            // from USGS National Atlas: http://webservices.nationalatlas.gov/wms/boundaries?SERVICE=WMS&REQUEST=GetCapabilities
+            countiesLayer = new OpenLayers.Layer.WMS( 
+            	"NM", 
+            	"http://geog485.unm.edu:8080/geoserver/s_jjones15/wms?",
+            	{layers: "s_jjones15:nm_state_bdy_00", version: '1.3.0', transparent: 'TRUE'},
+            	{isBaseLayer: false, visibility: false, opacity: .8}
+            );
+            map.addLayer(countiesLayer);
+			
+            indlanLayer = new OpenLayers.Layer.WMS( 
+            	"Indian Lands", 
+            	"http://geog485.unm.edu:8080/geoserver/s_jjones15/wms?",
+            	{layers: "s_jjones15:fe_2007_nm_aiannh00", version: '1.3.0', transparent: 'TRUE'},
+            	{isBaseLayer: false, visibility: false, opacity: .5}
+            );
+            map.addLayer(indlanLayer);
+			
+            federallandsLayer = new OpenLayers.Layer.WMS( 
+            	"Federal Lands", 
+            	"http://geog485.unm.edu:8080/geoserver/s_jjones15/wms?",
+            	{layers: "s_jjones15:nm_fedlands_08", version: '1.3.0', transparent: 'TRUE'},
+            	{isBaseLayer: false, visibility: false, opacity: .5}
+            );
+            map.addLayer(federallandsLayer);
+			
+			            sp = new OpenLayers.Layer.WMS( 
+            	"State Parks", 
+            	"http://geog485.unm.edu:8080/geoserver/s_jjones15/wms?",
+            	{layers: "s_jjones15:nmstateparks", version: '1.3.0', transparent: 'TRUE'},
+            	{isBaseLayer: false, visibility: false, opacity: .5}
+            );
+            map.addLayer(sp);
+			
+			            np = new OpenLayers.Layer.WMS( 
+            	"National Parks", 
+            	"http://geog485.unm.edu:8080/geoserver/s_jjones15/wms?",
+            	{layers: "s_jjones15:nps_boundary", version: '1.3.0', transparent: 'TRUE'},
+            	{isBaseLayer: false, visibility: false, opacity: .5}
+            );
+            map.addLayer(np);
+			
+			map.setCenter(
+                new OpenLayers.LonLat(lon, lat), zoom
+            );
+
+            map.addControl(new OpenLayers.Control.LayerSwitcher() );
+            map.addControl(new OpenLayers.Control.Scale() );
+                
+        }
+        // =============== End of Initialization Function ============
+        
+	</script>
+	<style type="text/css">
+		#map {width:800px; height:600px}
+	</style>
+  </head>
+  <body onload="init()">
+    <h1>Milestone 15</h1>
+    <p>This is a map of all of the state, tribal, and federal lands in the State of New Mexico. The data is divided up in to different grouped. The Federal Lands data has all of the different Federal Lands divided up in different colours based on what agency controls them. The Native lands
+are divided up by colour based on which tribe they belong too. The State Parks are divided up by colour based on which State Park it is.</p>
+	
+	<!-- Map DIV -->
+	<div id="map"></div>
+	
+  </body>
+</html>
